@@ -3,3 +3,8 @@ second route / profile ispar aapko aapki profile dikhe gi and aaapke save posts 
 third route / feed yaha par saari images dikhegi
 fourth route / click karke image open hogi
 fifth route / board/:boardname poora board dikhega
+
+multer use
+posts
+image
+caption
