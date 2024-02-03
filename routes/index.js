@@ -6,28 +6,32 @@ const passport = require('passport');
 
 //user login hota hai yis ki vajah se
 const localStrategy = require('passport-local');
-passport.authenticate(new localStrategy(userModel.authenticate()));
+passport.use(new localStrategy(userModel.authenticate()));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-//profile
-router.get('/profile',isLoggedIn, function(req, res, next) {
-  res.send("profile");
+router.get('/login', function(req, res, next) {
+  res.render('login');
 });
 
-router.post("/register", async function(req,res){
-  // const userData = await userModel.create({
-  //   username: req.body.username,
-  //   email: req.body.email,
-  //   fullname: req.body.fullname,
-  // })
 
+
+router.get('/feed', function(req, res, next) {
+  res.render('feed');
+});
+
+//profile
+router.get('/profile',isLoggedIn, function(req, res, next) {
+  res.render("profile");
+});
+
+router.post("/register",  function(req,res){
   //Another Option
   const { username, email, fullname } = req.body;
-  const userData = await userModel.create({ username, email, fullname });
+  const userData = new userModel({ username, email, fullname });
 
 userModel.register(userData, req.body.password)
   .then(function(){
@@ -40,7 +44,7 @@ userModel.register(userData, req.body.password)
 //login
 router.post("/login", passport.authenticate("local",{
   successRedirect: "/profile",
-  failureRedirect: "/"
+  failureRedirect: "/login"
 }),function(req,res){
 })
 
@@ -54,7 +58,7 @@ router.get("/logout",function(req,res,next){
 
 function isLoggedIn(req,res,next){
   if(req.isAuthenticated())return next();
-  res.redirect("/");
+  res.redirect("/login");
 }
 
 module.exports = router;
