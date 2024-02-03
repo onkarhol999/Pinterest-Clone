@@ -66,7 +66,7 @@ userModel.register(userData, req.body.password)
 
 //login
 router.post("/login", passport.authenticate("local",{
-  successRedirect: "/profile",
+  successRedirect: "/feed",
   failureRedirect: "/login",
   failureFlash: true
 }),function(req,res){
