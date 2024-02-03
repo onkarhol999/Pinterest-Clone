@@ -3,6 +3,7 @@ var router = express.Router();
 const userModel = require("./users");
 const postModel = require("./post");
 const passport = require('passport');
+// const flash = require('connect-flash');
 
 //user login hota hai yis ki vajah se
 const localStrategy = require('passport-local');
@@ -14,7 +15,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
-  res.render('login');
+  res.render('login', { error: req.flash('error')});
 });
 
 
@@ -44,7 +45,8 @@ userModel.register(userData, req.body.password)
 //login
 router.post("/login", passport.authenticate("local",{
   successRedirect: "/profile",
-  failureRedirect: "/login"
+  failureRedirect: "/login",
+  failureFlash: true
 }),function(req,res){
 })
 
@@ -54,7 +56,7 @@ router.get("/logout",function(req,res,next){
     if (err) { return next(err); }
     res.redirect('/');
   });
-});
+}); 
 
 function isLoggedIn(req,res,next){
   if(req.isAuthenticated())return next();
